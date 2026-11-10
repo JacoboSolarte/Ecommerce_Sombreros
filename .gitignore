@@ -1,0 +1,39 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Env files
+.env
+.env.local
+.env.*.local
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+
+# Uploads (keep the folder)
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# Design tool scratch outputs
+.taste-skill/
+.impeccable/mocks/
+.impeccable/review/
+.impeccable/build/
+.impeccable/live/
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Claude Code local settings
+.claude/settings.local.json

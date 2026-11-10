@@ -1,0 +1,197 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+
+  --color-shell: #14382c;
+  --color-shell-2: #1d4a3a;
+  --color-shell-3: #285a48;
+  --color-shell-ink: #f3f1ea;
+  --color-shell-mute: #c9d6cf;
+
+  --color-ground: #f1f2ef;
+  --color-surface: #ffffff;
+  --color-tile: #f7f7f5;
+  --color-tone: #e6e9e4;
+  --color-skeleton: #e1e5df;
+
+  --color-ink: #111813;
+  --color-ink-2: #4a5550;
+  --color-border: #c9cec8;
+  --color-field: #b9bfb8;
+
+  --color-gold: #e3b23c;
+  --color-gold-hover: #d6a22b;
+  --color-link: #1d6b52;
+  --color-link-hover: #14513e;
+
+  --color-ok: #1e7b4f;
+  --color-ok-bg: #e0f0e7;
+  --color-low: #9a5b00;
+  --color-low-bg: #f7ead0;
+  --color-out: #b3261e;
+  --color-out-bg: #f8e0dd;
+  --color-info: #1d5f8a;
+  --color-info-bg: #dce9f2;
+  --color-teal: #17665f;
+  --color-teal-bg: #d9ebe8;
+
+  /* Admin panel (framed sheet): tinted frame, hairline edge, chart hue */
+  --color-frame: #eef2ef;
+  --color-frame-active: #e0e6e1;
+  --color-edge: #e3e7e3;
+  --color-rule: #edf0ed;
+  --color-chart: #1d6b52;
+
+  --radius-card: 8px;
+  --radius-field: 6px;
+
+  --breakpoint-xs: 30rem;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html {
+  background: var(--color-ground);
+  color: var(--color-ink);
+  scroll-padding-top: 8rem;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  min-height: 100dvh;
+  overflow-x: clip;
+  background: var(--color-ground);
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-gold) 40%, transparent);
+  color: var(--color-ink);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-field) transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--color-field);
+  border-radius: 999px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-link);
+  outline-offset: 2px;
+}
+.on-shell :focus-visible,
+.focus-light:focus-visible {
+  outline-color: var(--color-gold);
+}
+
+a {
+  text-underline-offset: 3px;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+input[type="range"] {
+  accent-color: var(--color-link);
+}
+
+.tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Native dialogs: sheet + dialog share one backdrop and motion */
+dialog {
+  color: var(--color-ink);
+}
+dialog::backdrop {
+  background: rgb(10 20 15 / 0.5);
+}
+dialog[open]::backdrop {
+  animation: fade-in 180ms var(--ease-out-expo);
+}
+dialog[open].sheet-bottom {
+  animation: sheet-up 220ms var(--ease-out-expo);
+}
+dialog[open].sheet-right {
+  animation: sheet-left 220ms var(--ease-out-expo);
+}
+dialog[open].sheet-left {
+  animation: sheet-from-left 220ms var(--ease-out-expo);
+}
+dialog[open].dialog-center {
+  animation: pop-in 180ms var(--ease-out-expo);
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes sheet-up {
+  from { transform: translateY(24px); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+@keyframes sheet-left {
+  from { transform: translateX(24px); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+@keyframes sheet-from-left {
+  from { transform: translateX(-24px); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+@keyframes pop-in {
+  from { transform: translateY(8px) scale(0.98); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+@keyframes bump {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+.bump {
+  animation: bump 220ms var(--ease-out-expo);
+}
+@keyframes menu-in {
+  from { transform: translateY(-4px); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+.menu-in {
+  animation: menu-in 150ms var(--ease-out-expo);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Keep the end of the page reachable above the phone buy bar. */
+@media (max-width: 1023.98px) {
+  body:has([data-sticky-buy]) footer {
+    padding-bottom: 5.5rem;
+  }
+}
