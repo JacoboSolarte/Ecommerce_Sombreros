@@ -1,7 +1,9 @@
 # Casa Guaico
 
 Tienda en línea de sombreros de iraca tejidos a mano en Nariño, Colombia. MVP construido a partir del proyecto de Jira
-**Ecommerce_Sombreros** (clave `SCRUM`, 7 épicas). Sin despliegue por ahora: todo corre en local.
+**Ecommerce_Sombreros** (clave `SCRUM`, 7 épicas).
+
+**En línea:** https://casa-guaico-sombreros.vercel.app (ver [Despliegue](#despliegue)).
 
 | Capa | Tecnología |
 |---|---|
@@ -74,9 +76,23 @@ Frontend (`frontend/.env.local`): `BACKEND_URL`. Ningún `.env` se versiona.
    descuento de stock atómico al aprobar el pago con bloqueo de filas, nunca stock negativo.
 6. **Administración** (SCRUM-40..46): panel con acceso solo para administradores (los intentos denegados quedan en `audit_log`),
    productos (crear, editar, desactivar sin borrar), inventario con ajustes y movimientos, pedidos con transiciones válidas, resumen de ventas.
-7. **Pruebas y seguridad** (SCRUM-47..51, 54): 132 pruebas automáticas (dominio, casos de uso y API, incluida la carrera por la última unidad),
-   flujo completo de compra verificado, contraseñas con bcrypt, sin datos de tarjeta, sin secretos en el código.
-   **Fuera de alcance por ahora:** SCRUM-52/53 (producción y despliegue).
+7. **Pruebas, seguridad y despliegue** (SCRUM-47..54): 132 pruebas automáticas (dominio, casos de uso y API, incluida la carrera por la última unidad),
+   flujo completo de compra verificado, contraseñas con bcrypt, sin datos de tarjeta, sin secretos en el código,
+   despliegue en producción (Vercel + Render + Aiven) con cookie `Secure` y conexión a MySQL por TLS.
+
+## Despliegue
+
+| Pieza | Servicio (plan gratis) | URL |
+|---|---|---|
+| Frontend (Next.js) | Vercel | https://casa-guaico-sombreros.vercel.app |
+| Backend (FastAPI) | Render, definido en `render.yaml` | https://casa-guaico-api.onrender.com/api/health |
+| Base de datos | Aiven for MySQL 8 (TLS con `backend/certs/aiven-ca.pem`) | — |
+
+- El backend gratis de Render se duerme tras unos minutos sin tráfico; la primera visita puede tardar 30-60 s.
+- Render corre `alembic upgrade head` en cada arranque. Los datos de muestra se cargaron una vez con `scripts/seed.py`.
+- `DATABASE_URL` en producción: `mysql+pymysql://avnadmin:<clave>@<host>:<puerto>/defaultdb?charset=utf8mb4&ssl_ca=certs/aiven-ca.pem`.
+- Las imágenes que suba el administrador viven en el disco de Render y se pierden al redesplegar (las del catálogo de muestra están en `frontend/public`).
+- Frontend: `cd frontend && npx vercel deploy --prod` (variable `BACKEND_URL` configurada en Vercel).
 
 ## Limitaciones conocidas
 
