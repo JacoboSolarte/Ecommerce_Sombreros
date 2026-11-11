@@ -37,3 +37,7 @@ Thumbs.db
 
 # Claude Code local settings
 .claude/settings.local.json
+
+# Production connection data (never commit)
+.env.production
+backend/certs/*.key

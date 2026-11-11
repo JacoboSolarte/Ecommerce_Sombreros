@@ -1,0 +1,40 @@
+# Render Blueprint: backend FastAPI de Casa Guaico (plan gratis).
+# El frontend va en Vercel y la base de datos MySQL en Aiven.
+services:
+  - type: web
+    name: casa-guaico-api
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips='*'
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.5
+      - key: APP_ENV
+        value: production
+      # Service URI de Aiven en formato mysql+pymysql://...; se pega a mano en Render.
+      - key: DATABASE_URL
+        sync: false
+      # URL pública del frontend en Vercel (para el retorno del simulador de pagos).
+      - key: FRONTEND_URL
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_MINUTES
+        value: "10080"
+      - key: COOKIE_SECURE
+        value: "true"
+      - key: TAX_RATE
+        value: "0.19"
+      - key: SHIPPING_FLAT_COP
+        value: "12000"
+      - key: FREE_SHIPPING_FROM_COP
+        value: "250000"
+      - key: LOW_STOCK_THRESHOLD
+        value: "3"
+      - key: PAYMENT_PROVIDER
+        value: simulator
